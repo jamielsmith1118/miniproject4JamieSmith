@@ -7,7 +7,6 @@ from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, DetailView, CreateView
-
 from .forms import TicketCreateForm, TicketAssignForm
 from .models import Ticket
 
@@ -54,6 +53,7 @@ class MyTicketsView(LoginRequiredMixin, ListView):
 
     def get_queryset(self):
         return Ticket.objects.filter(created_by=self.request.user).order_by("-created_at")
+
 # All tickets view
 class TicketListView(LoginRequiredMixin, ListView):
     model = Ticket
