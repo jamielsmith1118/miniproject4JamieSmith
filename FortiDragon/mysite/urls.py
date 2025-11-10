@@ -21,7 +21,7 @@ from django.views.generic import TemplateView
 urlpatterns = [
     path('admin/', admin.site.urls),
     path("", TemplateView.as_view(template_name="home.html"), name="home"),
-    path("accounts/", include("django.contrib.auth.urls")),  # login, logout, password reset, etc.
-    path("accounts/register/", register, name="register"),
+    path("auth/", include("django.contrib.auth.urls")),  # login, logout, password reset, etc.
+    path("auth/register/", register, name="register"),
     path("tickets/", include("tickets.urls", namespace="tickets")),
 ]
