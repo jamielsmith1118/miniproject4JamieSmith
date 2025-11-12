@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}Ticket #{{ ticket.id }}{% endblock %}
+
+{% block content %}
+  <h2 class="mb-3">Ticket #{{ ticket.id }} – {{ ticket.title }}</h2>
+
+  <table class="table table-bordered table-sm">
+    <tbody>
+      <tr>
+        <th scope="row">Status</th>
+        <td>{{ ticket.get_status_display }}</td>
+      </tr>
+      <tr>
+        <th scope="row">Priority</th>
+        <td>{{ ticket.get_priority_display }}</td>
+      </tr>
+      <tr>
+        <th scope="row">Created By</th>
+        <td>{{ ticket.created_by|default:"—" }}</td>
+      </tr>
+      <tr>
+        <th scope="row">Assigned To</th>
+        <td>{{ ticket.assigned_to|default:"Unassigned" }}</td>
+      </tr>
+      <tr>
+        <th scope="row">Created At</th>
+        <td>{{ ticket.created_at|date:"Y-m-d H:i" }}</td>
+      </tr>
+      <tr>
+        <th scope="row">Last Updated</th>
+        <td>{{ ticket.updated_at|date:"Y-m-d H:i" }}</td>
+      </tr>
+      <tr>
+        <th scope="row">Description</th>
+        <td style="white-space: pre-wrap;">{{ ticket.description }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p>
+    <a href="{% url 'tickets:pending' %}" class="btn btn-secondary btn-sm">
+      &larr; Back to Pending Tickets
+    </a>
+  </p>
+{% endblock %}

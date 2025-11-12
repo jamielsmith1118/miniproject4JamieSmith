@@ -10,6 +10,6 @@ urlpatterns = [
     path("list/", views.TicketListView.as_view(), name="list"),
     path("pending/", views.PendingTicketsView.as_view(), name="pending"),
     path("<int:pk>/", views.TicketDetailView.as_view(), name="detail"),
-    path("<int:pk>/approve/", views.approve_ticket, name="approve"),
-    path("<int:pk>/assign/", views.assign_ticket, name="assign"),
+    path("<int:pk>/approve/", views.ApproveTicketView.as_view(), name="approve"),
+    path("<int:pk>/assign/", views.AssignTicketToMeView.as_view(), name="assign_to_me"),
 ]

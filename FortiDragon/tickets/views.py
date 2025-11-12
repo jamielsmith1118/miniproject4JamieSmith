@@ -1,12 +1,13 @@
 # tickets/views.py
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
-from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin, PermissionRequiredMixin
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView, ListView, DetailView, CreateView
+from django.views import View
 from .forms import TicketCreateForm, TicketAssignForm
 from .models import Ticket
 
@@ -75,57 +76,95 @@ class TicketDetailView(LoginRequiredMixin, DetailView):
     context_object_name = "ticket"
 
 # Pending ticket view
-class StaffRequiredMixin(UserPassesTestMixin):
-    """Mixin to restrict view to staff or users with specific perms."""
+# class StaffRequiredMixin(UserPassesTestMixin):
+#     """Mixin to restrict view to staff or users with specific perms."""
+#
+#     def test_func(self):
+#         user = self.request.user
+#         return user.is_staff or user.has_perm("tickets.can_approve_ticket")
 
-    def test_func(self):
-        user = self.request.user
-        return user.is_staff or user.has_perm("tickets.can_approve_ticket")
 
-
-class PendingTicketsView(LoginRequiredMixin, StaffRequiredMixin, ListView):
+class PendingTicketsView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     model = Ticket
-    template_name = "tickets/pending_list.html"
+    template_name = "tickets/tickets_pending.html"
     context_object_name = "tickets"
+    permission_required = "tickets.can_approve_ticket"
 
     def get_queryset(self):
-        return Ticket.objects.filter(status=Ticket.Status.PENDING).order_by("created_at")
+        return Ticket.objects.filter(status=Ticket.Status.PENDING).select_related("created_by", "assigned_to").order_by("created_at")
 
 # Approve ticket view
-@login_required
-@permission_required("tickets.can_approve_ticket", raise_exception=True)
-def approve_ticket(request, pk):
-    ticket = get_object_or_404(Ticket, pk=pk)
+# @login_required
+# @permission_required("tickets.can_approve_ticket", raise_exception=True)
+# def approve_ticket(request, pk):
+#     ticket = get_object_or_404(Ticket, pk=pk)
+#
+#     if ticket.status != Ticket.Status.PENDING:
+#         messages.info(request, "This ticket is not in pending status.")
+#         return redirect("tickets:detail", pk=pk)
+#
+#     ticket.status = Ticket.Status.APPROVED
+#     ticket.approved_by = request.user
+#     ticket.save(update_fields=["status", "approved_by"])
+#
+#     messages.success(request, "Ticket approved.")
+#     return redirect("tickets:detail", pk=pk)
 
-    if ticket.status != Ticket.Status.PENDING:
-        messages.info(request, "This ticket is not in pending status.")
+class ApproveTicketView(LoginRequiredMixin, PermissionRequiredMixin, View):
+    permission_required = "tickets.can_approve_ticket"
+    raise_exception = True
+
+    def post(self, request, pk):
+        ticket = get_object_or_404(Ticket, pk=pk)
+
+        if ticket.status != Ticket.Status.PENDING:
+            messages.info(request, "This ticket is not in pending status.")
+            return redirect("tickets:detail", pk=pk)
+
+        ticket.status = Ticket.Status.APPROVED
+        ticket.approved_by = request.user
+        ticket.save(update_fields=["status", "approved_by"])
+
+        messages.success(request, "Ticket approved.")
         return redirect("tickets:detail", pk=pk)
 
-    ticket.status = Ticket.Status.APPROVED
-    ticket.approved_by = request.user
-    ticket.save(update_fields=["status", "approved_by"])
-
-    messages.success(request, "Ticket approved.")
-    return redirect("tickets:detail", pk=pk)
 
 # Assign ticket view
-@login_required
-@permission_required("tickets.can_assign_ticket", raise_exception=True)
-def assign_ticket(request, pk):
-    ticket = get_object_or_404(Ticket, pk=pk)
+# @login_required
+# @permission_required("tickets.can_assign_ticket", raise_exception=True)
+# def assign_ticket(request, pk):
+#     ticket = get_object_or_404(Ticket, pk=pk)
+#
+#     if request.method == "POST":
+#         form = TicketAssignForm(request.POST, instance=ticket)
+#         if form.is_valid():
+#             ticket = form.save(commit=False)
+#             ticket.status = Ticket.Status.ASSIGNED
+#             ticket.save(update_fields=["assigned_to", "status"])
+#             messages.success(request, "Ticket assigned.")
+#             return redirect("tickets:detail", pk=pk)
+#     else:
+#         form = TicketAssignForm(instance=ticket)
+#
+#     # Filter assigned_to choices to staff only:
+#     form.fields["assigned_to"].queryset = User.objects.filter(is_staff=True)
+#
+#     return render(request, "tickets/ticket_form.html", {"form": form, "assigning": True})
 
-    if request.method == "POST":
-        form = TicketAssignForm(request.POST, instance=ticket)
-        if form.is_valid():
-            ticket = form.save(commit=False)
-            ticket.status = Ticket.Status.ASSIGNED
-            ticket.save(update_fields=["assigned_to", "status"])
-            messages.success(request, "Ticket assigned.")
+class AssignTicketToMeView(LoginRequiredMixin, PermissionRequiredMixin, View):
+    permission_required = "tickets.can_assign_ticket"
+    raise_exception = True
+
+    def post(self, request, pk):
+        ticket = get_object_or_404(Ticket, pk=pk)
+
+        if ticket.status not in [Ticket.Status.PENDING, Ticket.Status.APPROVED]:
+            messages.info(request, "This ticket cannot be assigned from its current status.")
             return redirect("tickets:detail", pk=pk)
-    else:
-        form = TicketAssignForm(instance=ticket)
 
-    # Filter assigned_to choices to staff only:
-    form.fields["assigned_to"].queryset = User.objects.filter(is_staff=True)
+        ticket.assigned_to = request.user
+        ticket.status = Ticket.Status.ASSIGNED
+        ticket.save(update_fields=["assigned_to", "status"])
 
-    return render(request, "tickets/ticket_form.html", {"form": form, "assigning": True})
+        messages.success(request, "Ticket assigned to you.")
+        return redirect("tickets:detail", pk=pk)
