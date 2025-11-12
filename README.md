@@ -5,9 +5,9 @@
  
 # Project FortiDragon
  
-**Forged in education. Focused on protection.**
+**Forged in education. Focused on technology.**
 
-**Project FortiDragon**: Empowering cybersecurity learning through real-world vulnerability tracking.
+**Project FortiDragon**: Empowering cybersecurity learning through real-world IT issue tracking.
  
 ## Description
  
@@ -26,28 +26,25 @@ pip install -r requirements.txt
  
  
 ### Executing program
- 
-* How to run the program
-* Step-by-step bullets
 
-Create migration files. These are the plans for database changes.
+* Create migration files. These are the plans for database changes.
 ```
 python manage.py makemigrations
 ```
 
-Apply the migrations to the database. This creates and updates the tables and fields.
+* Apply the migrations to the database. This creates and updates the tables and fields.
 
 ```
 python manage.py migrate
 ```
 
-Create a superuser for administrative tasks.
+* Create a superuser for administrative tasks.
 
 ```
 python manage.py createsuperuser
 ```
 
-Run the server.
+* Run the server.
 
 ```
 python.py runserver
