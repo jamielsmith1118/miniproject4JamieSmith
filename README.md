@@ -7,12 +7,14 @@
  
 **Forged in education. Focused on technology.**
 
-**Project FortiDragon**: Empowering cybersecurity learning through real-world IT issue tracking.
+_**Project FortiDragon**_: Empowering cybersecurity learning through real-world IT issue tracking.
  
 ## Description
  
-Project FortiDragon is a Django-based ticketing system designed to model a realistic IT helpdesk workflow. When users browse to the site, they are immediately redirected to the login screen, where they can either register or sign in using Django’s built-in authentication. Regular staff users can log in and submit new tickets describing technical issues, including a title, description, priority level, and automatic timestamps. Admin and technician accounts (staff users with the appropriate permissions) can view a dashboard of all tickets, filter down to pending tickets, and then approve and assign them either to themselves or to another technician through a dedicated assignment view. Each ticket moves through a simple lifecycle (pending → approved → assigned → closed), and the interface uses Bootstrap styling along with a custom banner and logos to present a clean, helpdesk-style web application. Overall, the project demonstrates user authentication, role-based permissions, form handling, and CRUD operations in Django while simulating how an internal IT support team would manage and track support requests.
+_**Project FortiDragon**_ is a Django-based ticketing system designed to model a realistic IT helpdesk workflow. When users browse to the site, they are immediately redirected to the login screen, where they can either register or sign in using Django’s built-in authentication. Regular staff users can log in and submit new tickets describing technical issues, including a title, description, priority level, and automatic timestamps. Admin and technician accounts (staff users with the appropriate permissions) can view a dashboard of all tickets, filter down to pending tickets, and then approve and assign them either to themselves or to another technician through a dedicated assignment view. Each ticket moves through a simple lifecycle (pending → approved → assigned → closed), and the interface uses Bootstrap styling along with a custom banner and logos to present a clean, helpdesk-style web application. Overall, the project demonstrates user authentication, role-based permissions, form handling, and CRUD operations in Django while simulating how an internal IT support team would manage and track support requests.
  
+The name _**Project FortiDragon**_ represents a fusion of cybersecurity functionality and the lessons learned through a career at Hutchinson Community College and academic work at Fort Hays State University. The project reflects a practical approach to vulnerability management through a custom Django-based web application.
+
 ## Getting Started
  
 ### Dependencies
@@ -20,12 +22,18 @@ Project FortiDragon is a Django-based ticketing system designed to model a reali
 * Download the program from https://github.com/jamielsmith1118/miniproject4JamieSmith
 * Please install the pip necessary packages to run the program.
 
+
 ```
 pip install -r requirements.txt
 ```
  
  
 ### Executing program
+* Navigate to the FortiDragon directory
+
+```
+cd .\FortiDragon\
+```
 
 * Create migration files. These are the plans for database changes.
 ```
