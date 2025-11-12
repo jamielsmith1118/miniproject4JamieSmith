@@ -17,28 +17,6 @@ class TicketCreateForm(forms.ModelForm):
             "priority": forms.Select(attrs={"class": "form-select"}),
         }
 
-# class AssignTicketForm(forms.ModelForm):
-#     class Meta:
-#         model = Ticket
-#         fields = ["assigned_to"]
-#
-#     def __init__(self, *args, **kwargs):
-#         super().__init__(*args, **kwargs)
-#         # Only allow assigning to staff users (admins/techs)
-#         self.fields["assigned_to"].queryset = (
-#            # User.objects.filter(groups__name__in=["Admins", "Technicians"]).order_by("username").distinct()
-#             User.objects.filter(is_staff=True).order_by("username").distinct()
-#            #User.objects.all()
-#         )
-#         self.fields["assigned_to"].label = "Assign to"
-#         self.fields["assigned_to"].widget = forms.Select(
-#             attrs={"class": "form-select"}
-#         )
-
-from django import forms
-from .models import Ticket
-
-
 class AssignTicketForm(forms.ModelForm):
     class Meta:
         model = Ticket

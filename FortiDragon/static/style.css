@@ -34,8 +34,8 @@ input[type=submit] { align-self: start; min-width: 10em; }
 
 /* ===== New: FortiDragon banner styles ===== */
 
-/* Optional helper if you want the banner to stretch edge-to-edge across the page
-   even though your <body> is max-width: 960px. Wrap the banner in a div.banner-full. */
+/* Optional helper if the banner should stretch edge-to-edge across the page
+    even though the <body> is max-width: 960px. Wrap the banner in a div.banner-full. */
 .banner-full {
     margin-left: calc(50% - 50vw);
     margin-right: calc(50% - 50vw);
