@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+
+{% block title %}Logged Out{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-12 col-md-6 ms-auto">
+      <h2 class="mb-3">You have been logged out</h2>
+
+      <p class="mb-3">
+        You are now signed out of Project FortiDragon.
+      </p>
+
+      <p class="mb-2">
+        <a href="{% url 'login' %}" class="btn btn-primary w-100">
+          Log in again
+        </a>
+      </p>
+
+      <p class="mt-2">
+        <a href="{% url 'home' %}">&larr; Return to home page</a>
+      </p>
+
+      <!-- Button to open the logout info modal -->
+      <button type="button"
+              class="btn btn-outline-info mt-3 w-100"
+              data-bs-toggle="modal"
+              data-bs-target="#logoutInfoModal">
+        Why did I see this page?
+      </button>
+    </div>
+  </div>
+
+  <!-- Logout Info Modal -->
+  <div class="modal fade" id="logoutInfoModal" tabindex="-1"
+       aria-labelledby="logoutInfoModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="logoutInfoModalLabel">Logout Information</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"
+                  aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p class="mb-2">
+            This page confirms that your session in Project FortiDragon has ended.
+          </p>
+          <ul class="mb-2">
+            <li>Your account is no longer logged in on this browser.</li>
+            <li>You’ll need to log in again to view or submit tickets.</li>
+            <li>It’s a good idea to log out on shared or lab computers.</li>
+          </ul>
+          <p class="mb-0">
+            When you’re ready to return, just click <strong>“Log in again”</strong> or go back to the home page.
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button"
+                  class="btn btn-outline-secondary"
+                  data-bs-dismiss="modal">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

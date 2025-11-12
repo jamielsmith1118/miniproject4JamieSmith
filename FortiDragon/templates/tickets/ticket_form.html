@@ -1,0 +1,97 @@
+{% extends "base.html" %}
+
+{% block title %}New Ticket{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-12 col-md-7 ms-auto">
+      <div class="d-flex justify-content-between align-items-center mb-2">
+        <h2 class="mb-0">Submit a New Ticket</h2>
+
+        <!-- Button to open the help modal -->
+        <button type="button"
+                class="btn btn-outline-info btn-sm"
+                data-bs-toggle="modal"
+                data-bs-target="#ticketHelpModal">
+          Ticket Help
+        </button>
+      </div>
+
+      <p class="text-muted">
+        Please describe your issue clearly so staff can help you faster.
+      </p>
+
+      <form method="post" class="mt-3">
+        {% csrf_token %}
+
+        {{ form.non_field_errors }}
+
+        <div class="mb-3">
+          <label for="{{ form.title.id_for_label }}" class="form-label">Title</label>
+          {{ form.title }}
+          {% if form.title.errors %}
+            <div class="text-danger small">{{ form.title.errors }}</div>
+          {% endif %}
+        </div>
+
+        <div class="mb-3">
+          <label for="{{ form.description.id_for_label }}" class="form-label">Description</label>
+          {{ form.description }}
+          {% if form.description.errors %}
+            <div class="text-danger small">{{ form.description.errors }}</div>
+          {% endif %}
+        </div>
+
+        <div class="mb-3">
+          <label for="{{ form.priority.id_for_label }}" class="form-label">Priority</label>
+          {{ form.priority }}
+          {% if form.priority.errors %}
+            <div class="text-danger small">{{ form.priority.errors }}</div>
+          {% endif %}
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">
+          Submit Ticket
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Ticket Help Modal (centered on page by Bootstrap) -->
+  <div class="modal fade" id="ticketHelpModal" tabindex="-1"
+       aria-labelledby="ticketHelpModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="ticketHelpModalLabel">How to Write a Good Ticket</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"
+                  aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <ul class="mb-2">
+            <li><strong>Title:</strong> Use a short summary, like “Cannot log in to FortiDragon” or “Printer in Lab 3 offline”.</li>
+            <li><strong>Description:</strong> Include what you were doing, any error messages, and what you already tried.</li>
+            <li><strong>Priority:</strong>
+              <ul>
+                <li><strong>Low:</strong> Minor issue or question.</li>
+                <li><strong>Medium:</strong> Problem but there is a workaround.</li>
+                <li><strong>High:</strong> Blocking your work.</li>
+                <li><strong>Urgent:</strong> System-wide or time-critical issue.</li>
+              </ul>
+            </li>
+          </ul>
+          <p class="mb-0">
+            Clear tickets help staff resolve your issue faster and keep the queue organized.
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button"
+                  class="btn btn-outline-secondary"
+                  data-bs-dismiss="modal">
+            Close
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

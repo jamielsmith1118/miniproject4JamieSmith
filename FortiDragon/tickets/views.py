@@ -27,15 +27,20 @@ def register(request):
     return render(request, "registration/register.html", {"form": form})
 
 # Ticket dashboard view
-class DashboardView(LoginRequiredMixin, TemplateView):
+class DashboardView(LoginRequiredMixin, ListView):
+    model = Ticket
     template_name = "tickets/dashboard.html"
+    context_object_name = "tickets"
+
+    def get_queryset(self):
+        return Ticket.objects.select_related("created_by", "assigned_to").order_by("-created_at")
 
 # Create Ticket view
 class TicketCreateView(LoginRequiredMixin, CreateView):
     model = Ticket
     form_class = TicketCreateForm
     template_name = "tickets/ticket_form.html"
-    success_url = reverse_lazy("tickets:mine")  # after submit, go to "my tickets"
+    success_url = reverse_lazy("tickets:dashboard")  # after submit, go to "my tickets"
 
     def form_valid(self, form):
         # attach the currently logged-in user as the creator

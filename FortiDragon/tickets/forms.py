@@ -6,10 +6,12 @@ class TicketCreateForm(forms.ModelForm):
 
     class Meta:
         model = Ticket
-        # Users only fill these out; the rest is handled in code
+        # Fields the user fills in
         fields = ["title", "description", "priority"]
         widgets = {
-            "description": forms.Textarea(attrs={"rows": 5}),
+            "title": forms.TextInput(attrs={"class": "form-control"}),
+            "description": forms.Textarea(attrs={"class": "form-control", "rows": 4}),
+            "priority": forms.Select(attrs={"class": "form-select"}),
         }
 
 class TicketAssignForm(forms.ModelForm):
