@@ -1,0 +1,78 @@
+{#{% extends "base.html" %}#}
+{##}
+{#{% block title %}Assign Ticket #{{ ticket.id }}{% endblock %}#}
+{##}
+{#{% block content %}#}
+{#  <div class="row">#}
+{#    <div class="col-12 col-md-6 ms-auto">#}
+{#      <h2 class="mb-3">Assign Ticket #{{ ticket.id }}</h2>#}
+{##}
+{#      <p class="text-muted">#}
+{#        Title: <strong>{{ ticket.title }}</strong><br>#}
+{#        Current status: <strong>{{ ticket.get_status_display }}</strong>#}
+{#      </p>#}
+{##}
+{#      <form method="post" class="mt-3">#}
+{#        {% csrf_token %}#}
+{##}
+{#        {{ form.non_field_errors }}#}
+{##}
+{#        <div class="mb-3">#}
+{#          <label for="{{ form.assigned_to.id_for_label }}" class="form-label">#}
+{#            Assign to#}
+{#          </label>#}
+{#          {{ form.assigned_to }}#}
+{#          {% if form.assigned_to.errors %}#}
+{#            <div class="text-danger small">{{ form.assigned_to.errors }}</div>#}
+{#          {% endif %}#}
+{#        </div>#}
+{##}
+{#        <button type="submit" class="btn btn-primary w-100">#}
+{#          Save Assignment#}
+{#        </button>#}
+{#      </form>#}
+{##}
+{#      <p class="mt-3">#}
+{#        <a href="{% url 'tickets:detail' ticket.id %}">&larr; Back to ticket details</a>#}
+{#      </p>#}
+{#    </div>#}
+{#  </div>#}
+{#{% endblock %}#}
+
+{% extends "base.html" %}
+
+{% block title %}Assign Ticket #{{ ticket.id }}{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-12 col-md-6 ms-auto">
+      <h2 class="mb-3">Assign Ticket #{{ ticket.id }}</h2>
+
+      <p class="text-muted">
+        Title: <strong>{{ ticket.title }}</strong><br>
+        Current status: <strong>{{ ticket.get_status_display }}</strong>
+      </p>
+
+      <form method="post" class="mt-3">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+
+        <div class="mb-3">
+          {{ form.assigned_to.label_tag }}
+          {{ form.assigned_to }}
+          {% if form.assigned_to.errors %}
+            <div class="text-danger small">{{ form.assigned_to.errors }}</div>
+          {% endif %}
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">
+          Save Assignment
+        </button>
+      </form>
+
+      <p class="mt-3">
+        <a href="{% url 'tickets:detail' ticket.id %}">&larr; Back to ticket details</a>
+      </p>
+    </div>
+  </div>
+{% endblock %}

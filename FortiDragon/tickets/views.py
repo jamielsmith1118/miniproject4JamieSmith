@@ -1,4 +1,3 @@
-# tickets/views.py
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required, permission_required
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin, PermissionRequiredMixin
@@ -6,9 +5,9 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import get_user_model
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
-from django.views.generic import TemplateView, ListView, DetailView, CreateView
-from django.views import View
-from .forms import TicketCreateForm, TicketAssignForm
+from django.views.generic import TemplateView, ListView, DetailView, CreateView, UpdateView
+from django.views import View, generic
+from .forms import TicketCreateForm, AssignTicketForm
 from .models import Ticket
 
 User = get_user_model()
@@ -168,3 +167,36 @@ class AssignTicketToMeView(LoginRequiredMixin, PermissionRequiredMixin, View):
 
         messages.success(request, "Ticket assigned to you.")
         return redirect("tickets:detail", pk=pk)
+
+class AssignTicketView(LoginRequiredMixin, PermissionRequiredMixin, UpdateView):
+    model = Ticket
+    fields = ["assigned_to"]
+    context_object_name = "ticket"
+    # form_class = AssignTicketForm
+    template_name = "tickets/assign_ticket.html"
+    permission_required = "tickets.can_assign_ticket"
+    raise_exception = True
+
+    def get_form(self, form_class=None):
+        form = super().get_form(form_class)
+        # Filter the dropdown: only staff users (admins/techs)
+        form.fields["assigned_to"].queryset = User.objects.filter(is_staff=True).order_by("username")
+        return form
+
+    def form_valid(self, form):
+        ticket = form.instance
+
+        # If we selected someone, mark as ASSIGNED
+        if ticket.assigned_to:
+            ticket.status = Ticket.Status.ASSIGNED
+        ticket.save(update_fields=["assigned_to", "status"])
+
+        messages.success(
+            self.request,
+            f"Ticket #{ticket.pk} assigned to {ticket.assigned_to}."
+        )
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        # After assigning, go back to the ticket detail page
+        return reverse_lazy("tickets:detail", kwargs={"pk": self.object.pk})
