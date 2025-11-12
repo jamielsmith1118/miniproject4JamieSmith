@@ -5,64 +5,75 @@
  
 # Project FortiDragon
  
-Simple overview of use/purpose.
+**Forged in education. Focused on protection.**
+
+**Project FortiDragon**: Empowering cybersecurity learning through real-world vulnerability tracking.
  
 ## Description
  
-An in-depth paragraph about your project and overview of use.
+Project FortiDragon is a Django-based ticketing system designed to model a realistic IT helpdesk workflow. When users browse to the site, they are immediately redirected to the login screen, where they can either register or sign in using Django’s built-in authentication. Regular staff users can log in and submit new tickets describing technical issues, including a title, description, priority level, and automatic timestamps. Admin and technician accounts (staff users with the appropriate permissions) can view a dashboard of all tickets, filter down to pending tickets, and then approve and assign them either to themselves or to another technician through a dedicated assignment view. Each ticket moves through a simple lifecycle (pending → approved → assigned → closed), and the interface uses Bootstrap styling along with a custom banner and logos to present a clean, helpdesk-style web application. Overall, the project demonstrates user authentication, role-based permissions, form handling, and CRUD operations in Django while simulating how an internal IT support team would manage and track support requests.
  
 ## Getting Started
  
 ### Dependencies
  
-* Describe any prerequisites, libraries, OS version, etc., needed before installing program.
-* ex. Windows 10
-* List pip install instructions.
+* Download the program from https://github.com/jamielsmith1118/miniproject4JamieSmith
+* Please install the pip necessary packages to run the program.
+
+```
+pip install -r requirements.txt
+```
  
-### Installing
- 
-* How/where to download your program
-* Any modifications needed to be made to files/folders
  
 ### Executing program
  
 * How to run the program
 * Step-by-step bullets
+
+Create migration files. These are the plans for database changes.
 ```
-code blocks for commands
+python manage.py makemigrations
 ```
- 
-## Help
- 
-Any advise for common problems or issues.
+
+Apply the migrations to the database. This creates and updates the tables and fields.
+
 ```
-command to run if program contains helper info
+python manage.py migrate
 ```
+
+Create a superuser for administrative tasks.
+
+```
+python manage.py createsuperuser
+```
+
+Run the server.
+
+```
+python.py runserver
+```
+
+Once the server is running, access Project FortiDragon by launching a web browser and navigating to http://127.0.1.1:8000/ which will display the login page. If a user has not previously registered, they will need to register before they can log in. Users can register by clicking the link labeled "Register Here."
+
+To register, users need to provide a username, password, and then confirm their password. After registering, the user is redirected to the login page, where they should log in with the account they just registered.
+
+If you see an error like ```django.db.utils.OperationalError: no such table: auth_user```, it means the migrations have not been applied yet. Run the commands above and try again.
+
  
 ## Authors
  
-Contributors names and contact info
+Jamie Smith
  
-ex. Dominique Pizzie  
-ex. [@DomPizzie](https://twitter.com/dompizzie)
+https://github.com/jamielsmith1118
  
 ## Version History
  
-* 0.2
-    * Various bug fixes and optimizations
-    * See [commit change]() or See [release history]()
 * 0.1
     * Initial Release
  
-## License
- 
-This project is licensed under the [NAME HERE] License - see the LICENSE.md file for details
  
 ## Acknowledgments
  
 Inspiration, code snippets, etc.
-* [awesome-readme](https://github.com/matiassingers/awesome-readme)
-* [PurpleBooth](https://gist.github.com/PurpleBooth/109311bb0361f32d87a2)
-* [dbader](https://github.com/dbader/readme-template)
-* [zenorocha](https://gist.github.com/zenorocha/4526327)
-* [fvcproductions](https://gist.github.com/fvcproductions/1bfc2d4aecb01a834b46)
+* [Django Tutorial](https://docs.djangoproject.com/en/5.2/intro/tutorial01/)
+* chatGPT using the HutchCC business subscription - Chat available upon approved request

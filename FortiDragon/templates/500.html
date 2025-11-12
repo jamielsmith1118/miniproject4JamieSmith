@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Server Error{% endblock %}
+
+{% block content %}
+  <div class="py-4">
+      <h1 class="display-6 text-danger mb-3">Something went wrong</h1>
+      <p class="lead">Project FortiDragon encountered an unexpected error.</p>
+
+      <div class="card shadow-sm mt-3" style="max-width: 700px;">
+          <div class="card-body">
+              <p class="mb-3">
+                  If you are setting this project up for the first time, please make sure you have run:
+              </p>
+
+              <pre class="bg-light p-2 rounded mb-2"><code>python manage.py makemigrations
+python manage.py migrate
+python manage.py createsuperuser</code></pre>
+
+              <p class="mb-0">
+                  Then restart the development server and try again.
+              </p>
+          </div>
+      </div>
+
+      <p class="mt-4">
+          <a href="/" class="btn btn-primary">Return to site</a>
+      </p>
+  </div>
+{% endblock %}
