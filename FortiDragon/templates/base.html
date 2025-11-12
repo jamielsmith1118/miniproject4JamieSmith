@@ -1,0 +1,107 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>{% block title %}{% endblock %} - Project FortiDragon</title>
+
+    <!-- Bootstrap CSS file -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB"
+          crossorigin="anonymous">
+
+    <!-- Static CSS file (adjust path if your CSS is in a subfolder) -->
+    <link rel="stylesheet" href="{% static 'style.css' %}">
+</head>
+<body>
+
+<div class="container">
+    <h1 class="text-center display-6 fw-bold m-0">Project FortiDragon</h1>
+
+        <header class="banner d-flex justify-content-between align-items-center py-2">
+
+        <!-- Left Logo (Fort Hays State University Tigers) -->
+        <img src="{% static 'images/fhsu_logo.png' %}"
+             alt="FHSU Logo"
+             class="logo">
+
+        {# 👇 Welcome message between left logo and nav #}
+        {% if user.is_authenticated %}
+            <span class="welcome-banner-text ms-3">
+                Welcome, {{ user.get_username }}
+            </span>
+        {% endif %}
+
+        <!-- Navigation -->
+        <nav>
+            <ul class="nav">
+                {% if user.is_authenticated %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'tickets:dashboard' %}">Dashboard</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'tickets:create' %}">New Ticket</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'tickets:mine' %}">My Tickets</a>
+                    </li>
+                    {% if user.is_staff or perms.tickets.can_approve_ticket %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{% url 'tickets:pending' %}">Pending</a>
+                            </li>
+                    {% endif %}
+
+                    <li class="nav-item">
+                        <form method="post" action="{% url 'logout' %}" class="m-0 p-0 d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="nav-link btn btn-link p-0">
+                                Logout
+                            </button>
+                        </form>
+                    </li>
+
+
+                {% else %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'login' %}">Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'register' %}">Register</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+
+        <!-- Right Logo (Hutchinson Community College Blue Dragons) -->
+        <img src="{% static 'images/hutchcc_logo.png' %}"
+             alt="HutchCC Logo"
+             class="logo">
+    </header>
+
+</div>
+
+<section class="content container mt-3">
+    <header>
+        {% block header %}{% endblock %}
+    </header>
+
+    <!-- Django messages framework -->
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-info mt-2">
+                {{ message }}
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    {% block content %}{% endblock %}
+</section>
+
+<!-- Bootstrap JavaScript  -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
+        crossorigin="anonymous"></script>
+
+</body>
+</html>
