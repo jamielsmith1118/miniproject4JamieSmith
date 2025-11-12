@@ -126,4 +126,11 @@ STATICFILES_DIRS = [
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
+# Default URL
+LOGIN_URL = "login"
+
+# after successful login, redirect to ticket dashboard
 LOGIN_REDIRECT_URL = "tickets:dashboard"
+
+# After logout, redirect to login page
+LOGOUT_REDIRECT_URL = "login"
