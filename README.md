@@ -58,7 +58,7 @@ python manage.py createsuperuser
 python.py runserver
 ```
 
-Once the server is running, access Project FortiDragon by launching a web browser and navigating to http://127.0.1.1:8000/ which will display the login page. If a user has not previously registered, they will need to register before they can log in. Users can register by clicking the link labeled "Register Here."
+Once the server is running, access Project FortiDragon by launching a web browser and navigating to http://127.0.0.1:8000/ which will redirect to the login page. If a user has not previously registered, they will need to register before they can log in. Users can register by clicking the link labeled "Register Here."
 
 To register, users need to provide a username, password, and then confirm their password. After registering, the user is redirected to the login page, where they should log in with the account they just registered.
 

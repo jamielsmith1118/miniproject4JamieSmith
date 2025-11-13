@@ -7,6 +7,7 @@ urlpatterns = [
     path("", views.DashboardView.as_view(), name="dashboard"),
     path("new/", views.TicketCreateView.as_view(), name="create"),
     path("mine/", views.MyTicketsView.as_view(), name="mine"),
+    path("submitted/", views.MySubmittedTicketsView.as_view(), name="submitted"),
     path("list/", views.TicketListView.as_view(), name="list"),
     path("pending/", views.PendingTicketsView.as_view(), name="pending"),
     path("<int:pk>/", views.TicketDetailView.as_view(), name="detail"),

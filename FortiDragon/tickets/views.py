@@ -51,7 +51,23 @@ class TicketCreateView(LoginRequiredMixin, CreateView):
         return super().form_valid(form)
 
 # My tickets view
-class MyTicketsView(LoginRequiredMixin, ListView):
+class MyTicketsView(LoginRequiredMixin, generic.ListView):
+    model = Ticket
+    template_name = "tickets/ticket_list.html"
+    context_object_name = "tickets"
+
+    def get_queryset(self):
+        return Ticket.objects.filter(assigned_to=self.request.user).order_by("-created_at")
+
+class MyAssignedTicketsView(LoginRequiredMixin, generic.ListView):
+    model = Ticket
+    template_name = "tickets/ticket_list.html"
+    context_object_name = "tickets"
+
+    def get_queryset(self):
+        return Ticket.objects.filter(assigned_to=self.request.user).order_by("-created_at")
+
+class MySubmittedTicketsView(LoginRequiredMixin, generic.ListView):
     model = Ticket
     template_name = "tickets/ticket_list.html"
     context_object_name = "tickets"
@@ -74,15 +90,6 @@ class TicketDetailView(LoginRequiredMixin, DetailView):
     template_name = "tickets/ticket_detail.html"
     context_object_name = "ticket"
 
-# Pending ticket view
-# class StaffRequiredMixin(UserPassesTestMixin):
-#     """Mixin to restrict view to staff or users with specific perms."""
-#
-#     def test_func(self):
-#         user = self.request.user
-#         return user.is_staff or user.has_perm("tickets.can_approve_ticket")
-
-
 class PendingTicketsView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
     model = Ticket
     template_name = "tickets/tickets_pending.html"
@@ -91,23 +98,6 @@ class PendingTicketsView(LoginRequiredMixin, PermissionRequiredMixin, ListView):
 
     def get_queryset(self):
         return Ticket.objects.filter(status=Ticket.Status.PENDING).select_related("created_by", "assigned_to").order_by("created_at")
-
-# Approve ticket view
-# @login_required
-# @permission_required("tickets.can_approve_ticket", raise_exception=True)
-# def approve_ticket(request, pk):
-#     ticket = get_object_or_404(Ticket, pk=pk)
-#
-#     if ticket.status != Ticket.Status.PENDING:
-#         messages.info(request, "This ticket is not in pending status.")
-#         return redirect("tickets:detail", pk=pk)
-#
-#     ticket.status = Ticket.Status.APPROVED
-#     ticket.approved_by = request.user
-#     ticket.save(update_fields=["status", "approved_by"])
-#
-#     messages.success(request, "Ticket approved.")
-#     return redirect("tickets:detail", pk=pk)
 
 class ApproveTicketView(LoginRequiredMixin, PermissionRequiredMixin, View):
     permission_required = "tickets.can_approve_ticket"
@@ -127,28 +117,6 @@ class ApproveTicketView(LoginRequiredMixin, PermissionRequiredMixin, View):
         messages.success(request, "Ticket approved.")
         return redirect("tickets:detail", pk=pk)
 
-
-# Assign ticket view
-# @login_required
-# @permission_required("tickets.can_assign_ticket", raise_exception=True)
-# def assign_ticket(request, pk):
-#     ticket = get_object_or_404(Ticket, pk=pk)
-#
-#     if request.method == "POST":
-#         form = TicketAssignForm(request.POST, instance=ticket)
-#         if form.is_valid():
-#             ticket = form.save(commit=False)
-#             ticket.status = Ticket.Status.ASSIGNED
-#             ticket.save(update_fields=["assigned_to", "status"])
-#             messages.success(request, "Ticket assigned.")
-#             return redirect("tickets:detail", pk=pk)
-#     else:
-#         form = TicketAssignForm(instance=ticket)
-#
-#     # Filter assigned_to choices to staff only:
-#     form.fields["assigned_to"].queryset = User.objects.filter(is_staff=True)
-#
-#     return render(request, "tickets/ticket_form.html", {"form": form, "assigning": True})
 
 class AssignTicketToMeView(LoginRequiredMixin, PermissionRequiredMixin, View):
     permission_required = "tickets.can_assign_ticket"

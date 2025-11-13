@@ -158,11 +158,11 @@ textarea {
     margin-left: auto;       /* pushes them to the right */
 }
 .welcome-banner-text {
-    font-size: 0.95rem;
+    font-size: 0.85rem;
     color: white;
     text-align: left;
-    white-space: nowrap;   /* prevents wrapping if the username is too short */
     font-weight: bold;
+    line-height: 1.1;
 }
 /* Make logout form/button in the nav line up like the other links */
 nav ul li form {
@@ -177,4 +177,12 @@ nav ul li form button.nav-link {
     color: inherit;         /* use same text color as other links */
     font: inherit;
     cursor: pointer;
+}
+
+nav ul.nav {
+    flex-wrap: nowrap;
+}
+
+nav ul.nav li.nav-item {
+    white-space: nowrap;
 }
