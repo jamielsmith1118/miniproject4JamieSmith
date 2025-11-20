@@ -19,7 +19,7 @@ The name _**Project FortiDragon**_ represents a fusion of cybersecurity function
  
 ### Dependencies
  
-* Download the program from https://github.com/jamielsmith1118/miniproject4JamieSmith
+* Download the program from [Github](https://github.com/jamielsmith1118/miniproject4JamieSmith).
 * Please install the pip necessary packages to run the program.
 
 
