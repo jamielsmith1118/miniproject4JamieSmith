@@ -68,7 +68,7 @@ If you see an error like ```django.db.utils.OperationalError: no such table: aut
 ## Authors
  
  
-[Jamie Smith](https://github.com/jamielsmith1118/miniproject4JamieSmith)
+[Jamie Smith](https://github.com/jamielsmith1118)
  
 ## Version History
  
